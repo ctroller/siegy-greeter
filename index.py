@@ -6,12 +6,11 @@ import os
 from asyncio import sleep
 from pathlib import Path
 from dotenv import load_dotenv
-from discord.ext import tasks, commands
 
-status = os.getenv("STATUS").split(",")
-working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 load_dotenv(dotenv_path="%s/.env" % working_dir)
+working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 
+status = os.getenv("DISCORD_STATUS").split(",")
 SIEGY_ID = os.getenv("SIEGY_USER")
 
 logger = logging.getLogger('discord')
