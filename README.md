@@ -5,6 +5,8 @@ Stupid Discord bot that sends audio files when a certain member connects.
 ## Installation
 Requires python3 and pip3.
 
+Requires Talk,Connect and Voice Activity bot permissions from Discord.
+
 Rename `.env.template` to `.env` and fill in your details.
 
 Add mp3 files (16Bit, 48Khz, Opus compatible) into `resources`.
