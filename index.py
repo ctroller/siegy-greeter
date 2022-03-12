@@ -21,7 +21,8 @@ logger.addHandler(handler)
 
 intents = discord.Intents.default()
 intents.voice_states = True
-client = discord.Client(intents=intents, activity=discord.Activity(name=random.choice(status).strip(), type=discord.ActivityType.watching))
+client = discord.Client(intents=intents, activity=discord.Activity(name=random.choice(status).strip(),
+                                                                   type=discord.ActivityType.watching))
 
 sound_files = list(Path("%s/resources/" % working_dir).glob("*.mp3"))
 
