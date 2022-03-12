@@ -12,7 +12,6 @@ status = ['Schwänzwäsche', 'Prosecco', 'Hueresohn si']
 working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 load_dotenv(dotenv_path="%s/.env" % working_dir)
 
-#SIEGY_ID = 124961878924460034
 SIEGY_ID = os.getenv("SIEGY_USER")
 
 logger = logging.getLogger('discord')
