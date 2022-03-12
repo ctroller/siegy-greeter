@@ -7,8 +7,8 @@ from asyncio import sleep
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path="%s/.env" % working_dir)
 working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
+load_dotenv(dotenv_path="%s/.env" % working_dir)
 
 status = os.getenv("DISCORD_STATUS").split(",")
 SIEGY_ID = os.getenv("SIEGY_USER")
