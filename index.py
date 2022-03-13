@@ -11,7 +11,7 @@ working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 load_dotenv(dotenv_path="%s/.env" % working_dir)
 
 status = os.getenv("DISCORD_STATUS").split(",")
-SIEGY_ID = os.getenv("SIEGY_USER")
+SIEGY_ID = int(os.getenv("SIEGY_USER"))
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.INFO)
