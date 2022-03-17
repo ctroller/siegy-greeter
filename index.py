@@ -67,7 +67,7 @@ async def send_sound(channel, audio_file):
         channel.cleanup()
     except TypeError as err:
         logger.warning("TypeError raised {0}".format(err))
-        await send_sound(channel)
+        await send_sound(channel, audio_file)
 
 
 @client.event
