@@ -72,7 +72,6 @@ async def send_sound(channel, audio_file):
 
 @client.event
 async def on_voice_state_update(member, before, _):
-
     if before.channel is None and member.id == STROBEY_ID and member.voice.channel is not None:
         channel = await member.voice.channel.connect()
         await send_sound(channel, get_cornhub())
