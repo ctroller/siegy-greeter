@@ -82,7 +82,6 @@ async def on_voice_state_update(member, before, _):
 
 
 random_choice = RandomReweightedList(range(1, 4))
-print(random_choice.get_random_item())
 
 
 @client.event
