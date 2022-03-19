@@ -81,7 +81,8 @@ async def on_voice_state_update(member, before, _):
         await send_sound(channel, get_random_join_voiceline())
 
 
-random_choice = RandomReweightedList(range(1, 3))
+random_choice = RandomReweightedList(range(1, 4))
+print(random_choice.get_random_item())
 
 
 @client.event

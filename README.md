@@ -14,7 +14,7 @@ Add mp3 files (16Bit, 48Khz, Opus compatible) into `resources`.
 ```bash
 pip3 install -r requirements.txt
 
-python3 index.py <path_to_main_folder>
+python3 siegy-greeter.py <path_to_main_folder>
 # e.g.
-python3 index.py /opt/siegy-greeter
+python3 siegy-greeter.py /opt/siegy-greeter
 ```
