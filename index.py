@@ -6,6 +6,7 @@ import os
 from asyncio import sleep
 from pathlib import Path
 from dotenv import load_dotenv
+from random_reweighted_list import RandomReweightedList
 
 working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 debug_mode = bool(sys.argv[2]) if len(sys.argv) > 2 else False
@@ -80,10 +81,13 @@ async def on_voice_state_update(member, before, _):
         await send_sound(channel, get_random_join_voiceline())
 
 
+random_choice = RandomReweightedList(range(1, 3))
+
+
 @client.event
 async def on_message(message):
     if message.channel.id == UELI_CHANNEL and message.author.id == UELI_ID:
-        rng = random.randint(1, 3)
+        rng = random_choice.get_random_item()
 
         if rng == 1:
             emojis = get_random_reg_emojis()
