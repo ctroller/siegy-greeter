@@ -10,7 +10,6 @@ from random_reweighted_list import RandomReweightedList
 
 working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 debug_mode = bool(sys.argv[2]) if len(sys.argv) > 2 else False
-print("{0}/.env{1}".format(working_dir, '.dev' if debug_mode else ''))
 load_dotenv(dotenv_path="{0}/.env{1}".format(working_dir, '.dev' if debug_mode else ''))
 
 status = os.getenv("DISCORD_STATUS").split(",")
@@ -98,7 +97,6 @@ async def on_message(message):
             await message.channel.send(text.replace("$USER", "<@{0}>".format(UELI_ID)))
         elif rng == 3:
             file = get_random_text_voiceline()
-            print(file)
             await message.channel.send(content="<@{0}>".format(UELI_ID), file=file)
 
 
