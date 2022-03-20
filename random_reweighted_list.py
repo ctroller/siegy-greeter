@@ -15,7 +15,7 @@ class RandomReweightedList(List):
         self.choices = {item: 1 for item in items}
 
     def get_random_item(self) -> any:
-        item = random.choices(self.items, [1 / self.choices[item] for item in self.items])[0]
+        item = random.choices(self.items, [sum(self.choices.values()) / self.choices[item] for item in self.items])[0]
         self.choices[item] = self.choices[item] + 1
         return item
 
