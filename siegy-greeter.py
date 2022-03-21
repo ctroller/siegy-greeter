@@ -6,7 +6,7 @@ import os
 from asyncio import sleep
 from pathlib import Path
 from dotenv import load_dotenv
-from random_reweighted_list import RandomReweightedList
+from random_even_distributed_list import RandomEvenDistributedList
 
 working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
 debug_mode = bool(sys.argv[2]) if len(sys.argv) > 2 else False
@@ -80,7 +80,7 @@ async def on_voice_state_update(member, before, _):
         await send_sound(channel, get_random_join_voiceline())
 
 
-random_choice = RandomReweightedList(range(1, 4))
+random_choice = RandomEvenDistributedList(range(1, 4))
 
 
 @client.event
@@ -100,4 +100,5 @@ async def on_message(message):
             await message.channel.send(content="<@{0}>".format(UELI_ID), file=file)
 
 
-client.run(os.getenv("DISCORD_TOKEN"))
+if __name__ == '__main__':
+    client.run(os.getenv("DISCORD_TOKEN"))
