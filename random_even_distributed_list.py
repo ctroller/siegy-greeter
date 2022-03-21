@@ -9,9 +9,10 @@ class RandomEvenDistributedList(MutableSequence):
     This does not guarantee a 100% even distribution, but guarantees a base distribution of within a few % margins of
     "error"
 
-    You can optionally specify a reset_interval to prevent python from having troubles with too little weighs.
+    You can optionally specify a reset_interval to prevent python from having troubles with too little weights.
     Defaults to 20. A higher reset_interval should not affect the distribution, but it is rather a way to not have
-    weighs e.g. 0.00000000001 etc, in which the distribution would be lost.
+    weights e.g. 0.00000000001 etc, in which the distribution would be (basically) lost, as the difference between the
+    weights would be too small to declare "random".
     """
     reset_interval = 10
 
@@ -26,7 +27,11 @@ class RandomEvenDistributedList(MutableSequence):
         self.reset_interval = reset_interval
 
     def get_random_item(self) -> any:
-        """"""
+        """Returns a random item from this list. The randomness is decided by internal weights, and recalculates these
+        by the following formula:
+
+        new_item_weight = 1 / pick_count, where pick_count is the times this items was picked before.
+        """
 
         """reset at specific intervals so the weighs don't get too low"""
         if sum(self.choices.values()) > self.reset_interval:
