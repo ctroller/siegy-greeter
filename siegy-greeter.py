@@ -32,14 +32,18 @@ client = discord.Client(intents=intents, activity=discord.Activity(name=random.c
                                                                    type=discord.ActivityType.watching))
 
 
+join_lines = RandomEvenDistributedList(list(Path("{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3")))
+message_lines = RandomEvenDistributedList(list(Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3")))
+text_files = RandomEvenDistributedList(list(Path("{0}/resources/text_msg/".format(working_dir)).glob("*.txt")))
+emojis = RandomEvenDistributedList(os.getenv("REG_REACTIONS").split(","))
+
+
 def get_random_join_voiceline():
-    sound_files = list(Path("{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3"))
-    return random.choice(sound_files).resolve()
+    return join_lines.get_random_item().resolve()
 
 
 def get_random_text_voiceline():
-    sound_files = list(Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3"))
-    return discord.File(random.choice(sound_files).resolve())
+    return discord.File(message_lines.get_random_item().resolve())
 
 
 def get_cornhub():
@@ -47,14 +51,12 @@ def get_cornhub():
 
 
 def get_random_text_message():
-    text_files = list(Path("{0}/resources/text_msg/".format(working_dir)).glob("*.txt"))
-    text_file = random.choice(text_files).resolve()
-    with open(text_file, 'r') as f:
+    with(open(text_files.get_random_item()), 'r') as f:
         return "".join(f.readlines())
 
 
 def get_random_reg_emojis():
-    return random.choice(os.getenv("REG_REACTIONS").split(","))
+    return emojis.get_random_item()
 
 
 async def send_sound(channel, audio_file):
@@ -89,8 +91,8 @@ async def on_message(message):
         rng = random_choice.get_random_item()
 
         if rng == 1:
-            emojis = get_random_reg_emojis()
-            for emoji in emojis:
+            pick = get_random_reg_emojis()
+            for emoji in pick:
                 await message.add_reaction(emoji)
         elif rng == 2:
             text = get_random_text_message()

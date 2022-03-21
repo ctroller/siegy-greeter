@@ -26,6 +26,8 @@ class RandomEvenDistributedList(MutableSequence):
         self.reset_interval = reset_interval
 
     def get_random_item(self) -> any:
+        """"""
+
         """reset at specific intervals so the weighs don't get too low"""
         if sum(self.choices.values()) > self.reset_interval:
             self.choices = {item: 1 for item in self._data}
