@@ -3,8 +3,8 @@ from collections.abc import MutableSequence
 
 
 class RandomEvenDistributedList(MutableSequence):
-    """Random weighted list which re-calculates the weights after each pick so you should have an even distribution of items
-    that are returned by the getRandomItem method.
+    """Random weighted list which re-calculates the weights after each pick so you should have an even distribution of
+    items that are returned by the get_random_item method.
 
     This does not guarantee a 100% even distribution, but guarantees a base distribution of within a few % margins of
     "error"
