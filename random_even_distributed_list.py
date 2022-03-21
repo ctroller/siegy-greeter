@@ -30,7 +30,7 @@ class RandomEvenDistributedList(MutableSequence):
         """Returns a random item from this list. The randomness is decided by internal weights, and recalculates these
         by the following formula:
 
-        new_item_weight = 1 / pick_count, where pick_count is the times this items was picked before.
+        new_item_weight = 1 / (pick_count + 1), where pick_count is the times this items was picked before.
         """
 
         """reset at specific intervals so the weighs don't get too low"""
