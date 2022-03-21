@@ -3,6 +3,7 @@ import logging
 import random
 import sys
 import os
+import time
 from asyncio import sleep
 from pathlib import Path
 from dotenv import load_dotenv
@@ -32,22 +33,23 @@ client = discord.Client(intents=intents, activity=discord.Activity(name=random.c
                                                                    type=discord.ActivityType.watching))
 
 
-join_lines = RandomEvenDistributedList(list(Path("{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3")))
+join_lines = RandomEvenDistributedList([discord.FFmpegPCMAudio(file.resolve()) for file in list(Path(
+    "{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3"))])
 message_lines = RandomEvenDistributedList(list(Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3")))
 text_files = RandomEvenDistributedList(list(Path("{0}/resources/text_msg/".format(working_dir)).glob("*.txt")))
 emojis = RandomEvenDistributedList(os.getenv("REG_REACTIONS").split(","))
 
 
-def get_random_join_voiceline():
-    return join_lines.get_random_item().resolve()
+def get_random_join_voiceline() -> discord.FFmpegPCMAudio:
+    return join_lines.get_random_item()
 
 
-def get_random_text_voiceline():
+def get_random_text_voiceline() -> discord.File:
     return discord.File(message_lines.get_random_item().resolve())
 
 
-def get_cornhub():
-    return Path("{0}/resources/cornhub.mp3".format(working_dir)).resolve()
+def get_cornhub() -> discord.FFmpegPCMAudio:
+    return discord.FFmpegPCMAudio(Path("{0}/resources/cornhub.mp3".format(working_dir)).resolve())
 
 
 def get_random_text_message():
@@ -59,17 +61,16 @@ def get_random_reg_emojis():
     return emojis.get_random_item()
 
 
-async def send_sound(channel, audio_file):
-    source = discord.FFmpegPCMAudio(audio_file)
+async def send_sound(channel, ffmpegaudio):
     try:
-        channel.play(source)
+        channel.play(ffmpegaudio)
         while channel.is_playing():
             await sleep(1)
         await channel.disconnect(force=False)
         channel.cleanup()
     except TypeError as err:
         logger.warning("TypeError raised {0}".format(err))
-        await send_sound(channel, audio_file)
+        await send_sound(channel, ffmpegaudio)
 
 
 @client.event
