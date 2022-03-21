@@ -31,10 +31,10 @@ intents.guild_messages = True
 client = discord.Client(intents=intents, activity=discord.Activity(name=random.choice(status).strip(),
                                                                    type=discord.ActivityType.watching))
 
-
-join_lines = RandomEvenDistributedList([discord.FFmpegPCMAudio(file.resolve()) for file in list(Path(
-    "{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3"))])
-message_lines = RandomEvenDistributedList(list(Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3")))
+join_lines = RandomEvenDistributedList([discord.FFmpegPCMAudio(file.resolve()) for file in
+                                        list(Path("{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3"))])
+message_lines = RandomEvenDistributedList([discord.File(file.resolve()) for file in list(
+    Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3"))])
 text_files = RandomEvenDistributedList(list(Path("{0}/resources/text_msg/".format(working_dir)).glob("*.txt")))
 emojis = RandomEvenDistributedList(os.getenv("REG_REACTIONS").split(","))
 
@@ -44,7 +44,7 @@ def get_random_join_voiceline() -> discord.FFmpegPCMAudio:
 
 
 def get_random_text_voiceline() -> discord.File:
-    return discord.File(message_lines.get_random_item().resolve())
+    return message_lines.get_random_item()
 
 
 def get_cornhub() -> discord.FFmpegPCMAudio:
