@@ -3,7 +3,6 @@ import logging
 import random
 import sys
 import os
-import time
 from asyncio import sleep
 from pathlib import Path
 from dotenv import load_dotenv
@@ -104,5 +103,4 @@ async def on_message(message):
 
 
 if __name__ == '__main__':
-    print('open is assigned to %r' % open)
     client.run(os.getenv("DISCORD_TOKEN"))
