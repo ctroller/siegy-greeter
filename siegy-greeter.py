@@ -37,6 +37,7 @@ message_lines = RandomEvenDistributedList([discord.File(file.resolve()) for file
     Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3"))])
 text_files = RandomEvenDistributedList(list(Path("{0}/resources/text_msg/".format(working_dir)).glob("*.txt")))
 emojis = RandomEvenDistributedList(os.getenv("REG_REACTIONS").split(","))
+cornhub = discord.FFmpegPCMAudio(Path("{0}/resources/cornhub.mp3".format(working_dir)).resolve())
 
 
 def get_random_join_voiceline() -> discord.FFmpegPCMAudio:
@@ -48,7 +49,7 @@ def get_random_text_voiceline() -> discord.File:
 
 
 def get_cornhub() -> discord.FFmpegPCMAudio:
-    return discord.FFmpegPCMAudio(Path("{0}/resources/cornhub.mp3".format(working_dir)).resolve())
+    return cornhub
 
 
 def get_random_text_message():
@@ -60,20 +61,20 @@ def get_random_reg_emojis():
     return emojis.get_random_item()
 
 
-async def send_sound(channel, ffmpegaudio):
+async def send_sound(channel: discord.VoiceClient, ffmpeg_pcm_audio: discord.FFmpegPCMAudio):
     try:
-        channel.play(ffmpegaudio)
+        channel.play(ffmpeg_pcm_audio)
         while channel.is_playing():
             await sleep(1)
         await channel.disconnect(force=False)
         channel.cleanup()
     except TypeError as err:
         logger.warning("TypeError raised {0}".format(err))
-        await send_sound(channel, ffmpegaudio)
+        await send_sound(channel, ffmpeg_pcm_audio)
 
 
 @client.event
-async def on_voice_state_update(member, before, _):
+async def on_voice_state_update(member: discord.Member, before: discord.VoiceState):
     if before.channel is None and member.id == STROBEY_ID and member.voice.channel is not None:
         channel = await member.voice.channel.connect()
         await send_sound(channel, get_cornhub())
@@ -86,7 +87,7 @@ random_choice = RandomEvenDistributedList(range(1, 4))
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     if message.channel.id == UELI_CHANNEL and message.author.id == UELI_ID:
         rng = random_choice.get_random_item()
 
