@@ -51,7 +51,7 @@ def get_cornhub():
 
 
 def get_random_text_message():
-    with(open(text_files.get_random_item()), 'r') as f:
+    with open(text_files.get_random_item().resolve(), 'r') as f:
         return "".join(f.readlines())
 
 
@@ -103,4 +103,5 @@ async def on_message(message):
 
 
 if __name__ == '__main__':
+    print('open is assigned to %r' % open)
     client.run(os.getenv("DISCORD_TOKEN"))
