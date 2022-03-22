@@ -8,8 +8,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from random_even_distributed_list import RandomEvenDistributedList
 
-working_dir = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
-debug_mode = bool(sys.argv[2]) if len(sys.argv) > 2 else False
+working_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+debug_mode = bool(sys.argv[1]) if len(sys.argv) > 1 else False
 load_dotenv(dotenv_path="{0}/.env{1}".format(working_dir, '.dev' if debug_mode else ''))
 
 status = os.getenv("DISCORD_STATUS").split(",")
@@ -31,17 +31,15 @@ intents.guild_messages = True
 client = discord.Client(intents=intents, activity=discord.Activity(name=random.choice(status).strip(),
                                                                    type=discord.ActivityType.watching))
 
-join_lines = RandomEvenDistributedList([discord.FFmpegPCMAudio(file.resolve()) for file in
-                                        list(Path("{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3"))])
-message_lines = RandomEvenDistributedList([discord.File(file.resolve()) for file in list(
-    Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3"))])
+join_lines = RandomEvenDistributedList(list(Path("{0}/resources/voicelines_join/".format(working_dir)).glob("*.mp3")))
+message_lines = RandomEvenDistributedList(list(Path("{0}/resources/voicelines_msg/".format(working_dir)).glob("*.mp3")))
 text_files = RandomEvenDistributedList(list(Path("{0}/resources/text_msg/".format(working_dir)).glob("*.txt")))
 emojis = RandomEvenDistributedList(os.getenv("REG_REACTIONS").split(","))
-cornhub = discord.FFmpegPCMAudio(Path("{0}/resources/cornhub.mp3".format(working_dir)).resolve())
+cornhub = Path("{0}/resources/cornhub.mp3".format(working_dir))
 
 
 def get_random_join_voiceline() -> discord.FFmpegPCMAudio:
-    return join_lines.get_random_item()
+    return discord.FFmpegPCMAudio(join_lines.get_random_item())
 
 
 def get_random_text_voiceline() -> discord.File:
@@ -49,7 +47,7 @@ def get_random_text_voiceline() -> discord.File:
 
 
 def get_cornhub() -> discord.FFmpegPCMAudio:
-    return cornhub
+    return discord.FFmpegPCMAudio(cornhub)
 
 
 def get_random_text_message():
@@ -63,6 +61,7 @@ def get_random_reg_emojis():
 
 async def send_sound(channel: discord.VoiceClient, ffmpeg_pcm_audio: discord.FFmpegPCMAudio):
     try:
+        logger.info("Playing file {0}".format(ffmpeg_pcm_audio))
         channel.play(ffmpeg_pcm_audio)
         while channel.is_playing():
             await sleep(1)
@@ -74,7 +73,7 @@ async def send_sound(channel: discord.VoiceClient, ffmpeg_pcm_audio: discord.FFm
 
 
 @client.event
-async def on_voice_state_update(member: discord.Member, before: discord.VoiceState):
+async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, _: discord.VoiceState):
     if before.channel is None and member.id == STROBEY_ID and member.voice.channel is not None:
         channel = await member.voice.channel.connect()
         await send_sound(channel, get_cornhub())
