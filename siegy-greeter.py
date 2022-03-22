@@ -12,11 +12,11 @@ working_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
 debug_mode = bool(sys.argv[1]) if len(sys.argv) > 1 else False
 load_dotenv(dotenv_path="{0}/.env{1}".format(working_dir, '.dev' if debug_mode else ''))
 
-status = os.getenv("DISCORD_STATUS").split(",")
-SIEGY_ID = int(os.getenv("SIEGY_USER"))
-STROBEY_ID = int(os.getenv("STROBEY_USER"))
-UELI_ID = int(os.getenv("UELI_USER"))
-UELI_CHANNEL = int(os.getenv("UELI_CHANNEL"))
+status = (os.getenv("DISCORD_STATUS") or "<default_status>").split(",")
+SIEGY_ID = int(os.getenv("SIEGY_USER") or "0")
+STROBEY_ID = int(os.getenv("STROBEY_USER") or "0")
+UELI_ID = int(os.getenv("UELI_USER") or "0")
+UELI_CHANNEL = int(os.getenv("UELI_CHANNEL") or "0")
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.INFO)
