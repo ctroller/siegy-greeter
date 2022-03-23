@@ -43,7 +43,7 @@ def get_random_join_voiceline() -> discord.FFmpegPCMAudio:
 
 
 def get_random_text_voiceline() -> discord.File:
-    return message_lines.get_random_item()
+    return discord.File(message_lines.get_random_item())
 
 
 def get_cornhub() -> discord.FFmpegPCMAudio:
